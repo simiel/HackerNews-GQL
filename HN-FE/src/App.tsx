@@ -3,6 +3,7 @@ import CreateLink from "./components/CreateLink";
 import Header from "./components/Header";
 import LinkList from "./components/LinkList";
 import { Route, Routes } from "react-router-dom";
+import Login from "./components/Login";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LinkList />} />
           <Route path="/create" element={<CreateLink />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </div>
