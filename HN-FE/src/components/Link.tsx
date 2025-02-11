@@ -1,5 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
-import { AUTH_TOKEN } from "../constants";
+import { AUTH_TOKEN, LINKS_PER_PAGE } from "../constants";
 import { timeDifferenceForDate } from "../utils";
 import { FEED_QUERY } from "./LinkList";
 
@@ -27,13 +27,22 @@ const Link = (props: any) => {
   const { link } = props;
   const authToken = localStorage.getItem(AUTH_TOKEN);
 
+  const take = LINKS_PER_PAGE;
+  const skip = 0;
+  const orderBy = { createdAt: "desc" };
+
   const [vote] = useMutation(VOTE_MUTATION, {
     variables: {
       linkId: link.id,
     },
     update: (cache, { data: { vote } }) => {
-      const { feed } = cache.readQuery({
+      const { feed }: any = cache.readQuery({
         query: FEED_QUERY,
+        variables: {
+          take,
+          skip,
+          orderBy,
+        },
       });
 
       const updatedLinks = feed.links.map((feedLink: any) => {
@@ -65,7 +74,7 @@ const Link = (props: any) => {
           <div
             className="ml1 gray f11"
             style={{ cursor: "pointer" }}
-            onClick={vote}
+            onClick={vote as React.MouseEventHandler<HTMLDivElement>}
           >
             ▲
           </div>
